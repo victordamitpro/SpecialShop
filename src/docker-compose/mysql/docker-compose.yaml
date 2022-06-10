@@ -8,9 +8,16 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - E:\Volumns\mysql:/var/lib/mysql
+      - E:\Volumes\mysql:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=password2
       - MYSQL_PASSWORD=password1
       - MYSQL_USER=admin
       - MYSQL_DATABASE=citizix_db
+    networks:
+      - specical-links 
+
+networks: 
+  specical-links: 
+    driver: bridge
+    external: true

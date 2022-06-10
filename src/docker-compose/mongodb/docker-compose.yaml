@@ -2,7 +2,8 @@ version: '3.9'
 
 services:
   mongodb:
-    image: mongo:lastest
+    image: mongo
+    container_name: mongo
     ports:
       - 27017:27017
     volumes:
@@ -10,3 +11,10 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=S3cret
+    networks:
+      - specical-links 
+
+networks: 
+  specical-links: 
+    driver: bridge
+    external: true

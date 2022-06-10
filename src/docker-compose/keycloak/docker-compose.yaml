@@ -1,23 +1,28 @@
-version: "3.2"
+version: '3'
 
 services:
-    mssqlscripts:
-        image: mcr.microsoft.com/mssql-tools
-        depends_on:
-            - mssql
-        command: /bin/bash -c 'until /opt/mssql-tools/bin/sqlcmd -S mssql -U sa -P "Password!23" -Q "create database Keycloak"; do sleep 5; done'
-    keycloak:
-        image: quay.io/keycloak/keycloak:legacy
-        depends_on:
-            - mssql
-            - mssqlscripts
-        ports:
-            - "8080:8080"
-        environment:
-            - KEYCLOAK_USER=admin
-            - KEYCLOAK_PASSWORD=admin
-            - DB_VENDOR=mssql
-            - DB_USER=sa
-            - DB_PASSWORD=Password!23
-            - DB_ADDR=mssql
-            - DB_DATABASE=Keycloak
+  mysql:
+      image: mysql:8
+      volumes:
+        - E:\Volumes\mysql\keycloak:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: keycloak
+        MYSQL_USER: keycloak
+        MYSQL_PASSWORD: password
+  keycloak:
+      image: quay.io/keycloak/keycloak:legacy
+      environment:
+        DB_VENDOR: MYSQL
+        DB_ADDR: mysql
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_PASSWORD: password
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: Pa55w0rd
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the MySQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "connectTimeout=30000"
+      ports:
+        - 8080:8080
+      depends_on:
+        - mysql

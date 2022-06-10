@@ -1,0 +1,16 @@
+version: '3.9'
+
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - E:\Volumns\mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password2
+      - MYSQL_PASSWORD=password1
+      - MYSQL_USER=admin
+      - MYSQL_DATABASE=citizix_db
